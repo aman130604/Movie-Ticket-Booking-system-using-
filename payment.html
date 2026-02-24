@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - MovieMania</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #151f28;
+        }
+        .glow-cyan {
+            color: #00f7ff;
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00f7ff;
+            color: white;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.3);
+        }
+        .pay-button {
+            background: #00f7ff;
+        }
+    </style>
+</head>
+<body class="font-poppins min-h-screen">
+    <!-- Header Bar -->
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[500px] h-[10px] rounded-[20px]" style="background: #00f7ff;"></div>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <!-- Title -->
+            <h1 class="text-3xl text-center glow-cyan mb-8">Payment Details</h1>
+
+            <!-- Booking Summary -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h2 class="text-xl text-cyan-400 mb-4">Booking Summary</h2>
+                <div id="booking-summary" class="text-gray-300 space-y-2">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Payment Method Toggle -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-4">
+                <div class="flex justify-center gap-4 mb-6">
+                    <button id="cardToggle" class="px-6 py-2 rounded-lg font-medium transition-all duration-300" onclick="togglePayment('card')">
+                        Card Payment
+                    </button>
+                    <button id="upiToggle" class="px-6 py-2 rounded-lg font-medium transition-all duration-300" onclick="togglePayment('upi')">
+                        UPI Payment
+                    </button>
+                </div>
+
+                <!-- Card Payment Form -->
+                <div id="cardPayment">
+                    <form id="payment-form" onsubmit="handlePayment(event)">
+                        <!-- Card Number -->
+                        <div class="mb-4">
+                            <label class="block text-cyan-400 mb-2">Card Number</label>
+                            <input type="text" class="input-field w-full p-3 rounded-lg" placeholder="1234 5678 9012 3456" required pattern="\d{16}" maxlength="16">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <!-- Expiry -->
+                            <div>
+                                <label class="block text-cyan-400 mb-2">Expiry Date</label>
+                                <input type="text" class="input-field w-full p-3 rounded-lg" placeholder="MM/YY" required pattern="\d{2}/\d{2}" maxlength="5">
+                            </div>
+                            <!-- CVV -->
+                            <div>
+                                <label class="block text-cyan-400 mb-2">CVV</label>
+                                <input type="text" class="input-field w-full p-3 rounded-lg" placeholder="123" required pattern="\d{3}" maxlength="3">
+                            </div>
+                        </div>
+
+                        <!-- Cardholder Name -->
+                        <div class="mb-6">
+                            <label class="block text-cyan-400 mb-2">Cardholder Name</label>
+                            <input type="text" class="input-field w-full p-3 rounded-lg" placeholder="John Doe" required>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-4">
+                            <button type="button" onclick="goBack()" class="w-1/2 p-3 rounded-lg border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 transition-colors">
+                                Go Back
+                            </button>
+                            <button type="submit" class="w-1/2 p-3 rounded-lg pay-button text-gray-900 font-semibold">
+                                Pay Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- UPI Payment Form -->
+                <div id="upiPayment" class="hidden">
+                    <form id="upi-form" onsubmit="handlePayment(event)">
+                        <div class="mb-6">
+                            <label class="block text-cyan-400 mb-2">UPI ID</label>
+                            <input type="text" class="input-field w-full p-3 rounded-lg" 
+                                placeholder="username@upi" required 
+                                pattern="[a-zA-Z0-9\.\-\_]{3,}@[a-zA-Z]{3,}">
+                            <p class="text-gray-400 text-sm mt-1">Example: yourname@upi, username@bank</p>
+                        </div>
+
+                        <!-- Payment Apps -->
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <button type="button" class="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/1200px-PhonePe_Logo.svg.png" 
+                                    alt="PhonePe" class="h-8 mx-auto">
+                            </button>
+                            <button type="button" class="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/2560px-Paytm_Logo_%28standalone%29.svg.png" 
+                                    alt="Paytm" class="h-8 mx-auto">
+                            </button>
+                            <button type="button" class="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+                                <img src="https://www.shutterstock.com/image-illustration/google-pay-logo-on-transparent-260nw-2311644375.jpg" 
+                                    alt="Google Pay" class="h-8 mx-auto">
+                            </button>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-4">
+                            <button type="button" onclick="goBack()" 
+                                class="w-1/2 p-3 rounded-lg border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 transition-colors">
+                                Go Back
+                            </button>
+                            <button type="submit" class="w-1/2 p-3 rounded-lg pay-button text-gray-900 font-semibold">
+                                Pay Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const userEmail = localStorage.getItem('userEmail');
+            const bookingData = JSON.parse(localStorage.getItem('bookingData'));
+            
+            if (!userEmail) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            if (!bookingData) {
+                alert('Please select seats first');
+                window.location.href = 'seats.html';
+                return;
+            }
+            
+            document.getElementById('booking-summary').innerHTML = `
+                <p><strong>Movie:</strong> ${bookingData.movieName}</p>
+                <p><strong>Theater:</strong> ${bookingData.theater}</p>
+                <p><strong>Screen:</strong> ${bookingData.screen}</p>
+                <p><strong>Show Time:</strong> ${bookingData.showTime}</p>
+                <p><strong>Selected Seats:</strong> ${bookingData.selectedSeats.join(', ')}</p>
+                ${bookingData.foodOrder ? `
+                <div class="mt-4 pt-4 border-t border-gray-600">
+                    <p><strong>Food & Beverages:</strong></p>
+                    <p class="text-gray-400 text-sm">Combo: ${bookingData.foodOrder.items.combo || 0}</p>
+                    <p class="text-gray-400 text-sm">Popcorn: ${bookingData.foodOrder.items.popcorn || 0}</p>
+                    <p class="text-gray-400 text-sm">Drinks: ${bookingData.foodOrder.items.drinks || 0}</p>
+                    <p class="text-cyan-400 mt-2">Food Total: ₹${bookingData.foodOrder.totalPrice}</p>
+                </div>` : ''}
+                <p class="text-xl text-cyan-400 mt-4"><strong>Total Amount:</strong> ₹${bookingData.totalPrice + (bookingData.foodOrder?.totalPrice || 0)}</p>
+            `;
+        };
+
+        function handlePayment(event) {
+            event.preventDefault();
+            const bookingData = JSON.parse(localStorage.getItem('bookingData'));
+            const userEmail = localStorage.getItem('userEmail');
+            
+            // Add user info to booking data
+            bookingData.userEmail = userEmail;
+            bookingData.bookingDate = new Date().toLocaleDateString();
+            
+            localStorage.setItem('completedBooking', JSON.stringify(bookingData));
+            window.location.href = 'success.html';  // Updated to use success.html
+        }
+
+        function goBack() {
+            window.location.href = 'seats.html';
+        }
+
+        function togglePayment(method) {
+            const cardToggle = document.getElementById('cardToggle');
+            const upiToggle = document.getElementById('upiToggle');
+            const cardPayment = document.getElementById('cardPayment');
+            const upiPayment = document.getElementById('upiPayment');
+
+            if (method === 'card') {
+                cardToggle.classList.add('bg-cyan-400', 'text-gray-900');
+                cardToggle.classList.remove('bg-gray-700', 'text-cyan-400');
+                upiToggle.classList.add('bg-gray-700', 'text-cyan-400');
+                upiToggle.classList.remove('bg-cyan-400', 'text-gray-900');
+                cardPayment.classList.remove('hidden');
+                upiPayment.classList.add('hidden');
+            } else {
+                upiToggle.classList.add('bg-cyan-400', 'text-gray-900');
+                upiToggle.classList.remove('bg-gray-700', 'text-cyan-400');
+                cardToggle.classList.add('bg-gray-700', 'text-cyan-400');
+                cardToggle.classList.remove('bg-cyan-400', 'text-gray-900');
+                upiPayment.classList.remove('hidden');
+                cardPayment.classList.add('hidden');
+            }
+        }
+
+        // Call this on page load to set initial state
+        window.addEventListener('load', () => {
+            togglePayment('card');
+        });
+    </script>
+</body>
+</html>

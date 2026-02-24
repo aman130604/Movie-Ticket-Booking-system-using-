@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Snacks - MovieMania</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #151f28;
+        }
+        .glow-cyan {
+            color: #00f7ff;
+            text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff;
+        }
+        .food-card {
+            background: rgba(25, 25, 25, 0.9);
+            border: 2px solid #00f7ff;
+            transition: all 0.3s ease;
+        }
+        @keyframes floatFood {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .food-card {
+            animation: floatFood 3s ease-in-out infinite;
+        }
+
+        /* Offset animation timing for each card */
+        .food-card:nth-child(2) { animation-delay: 0.2s; }
+        .food-card:nth-child(3) { animation-delay: 0.4s; }
+        .food-card:nth-child(4) { animation-delay: 0.6s; }
+        .food-card:nth-child(5) { animation-delay: 0.8s; }
+        .food-card:nth-child(6) { animation-delay: 1.0s; }
+        .food-card:nth-child(7) { animation-delay: 1.2s; }
+        .food-card:nth-child(8) { animation-delay: 1.4s; }
+        .food-card:nth-child(9) { animation-delay: 1.6s; }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px #00f7ff;
+            animation: none; /* Stop floating on hover */
+        }
+        .quantity-btn {
+            background: #00f7ff;
+            color: #191919;
+        }
+        .quantity-btn:hover {
+            box-shadow: 0 0 15px #00f7ff;
+        }
+        .promo-banner {
+            background: linear-gradient(45deg, rgba(0, 247, 255, 0.1), rgba(25, 25, 25, 0.9));
+            border: 2px solid #00f7ff;
+            animation: glowBorder 2s infinite;
+        }
+
+        @keyframes glowBorder {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 247, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 247, 255, 0.8); }
+        }
+    </style>
+</head>
+<body class="font-poppins min-h-screen">
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[500px] h-[10px] rounded-[20px]" style="background: #00f7ff;"></div>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Add Promotional Banner -->
+            <div class="promo-banner rounded-lg p-6 mb-8 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl text-cyan-400 font-bold mb-2">🍿 Get Your Snacks Delivered to Your Seat!</h2>
+                    <p class="text-gray-300">Enjoy the movie without missing a moment. Our staff will deliver your order right to your seat.</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-cyan-400 text-lg font-bold">FREE</span>
+                    <span class="text-gray-400 text-sm">Seat Delivery</span>
+                </div>
+            </div>
+
+            <h1 class="text-3xl text-center glow-cyan mb-8">Add Snacks to Your Order</h1>
+
+            <!-- Food Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Combo Deals -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1586511925558-a4c6376fe65f" alt="Popcorn Combo" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Popcorn Combo</h3>
+                    <p class="text-gray-300 text-sm mb-3">Large Popcorn + 2 Soft Drinks</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹299</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('combo', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="combo-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('combo', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Popcorn -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1585647347483-22b66260dfff" alt="Popcorn" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Large Popcorn</h3>
+                    <p class="text-gray-300 text-sm mb-3">Butter/Caramel/Cheese</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹199</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('popcorn', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="popcorn-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('popcorn', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beverages -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://media.istockphoto.com/id/1062831310/photo/pour-soft-drink-in-glass-with-ice-splash-on-dark-background.jpg?s=612x612&w=0&k=20&c=XlLTcFQ0FqcTWRa9QniHgpjlkdFrOJGJFGm5jg_TAAw=" alt="Beverages" class="w-full h-48 object-fit rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Soft Drinks</h3>
+                    <p class="text-gray-300 text-sm mb-3">Coke/Sprite/Fanta</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹99</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('drinks', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="drinks-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('drinks', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Indian Snacks -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950" alt="Samosa" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Samosa Combo</h3>
+                    <p class="text-gray-300 text-sm mb-3">2 Samosas + Mint Chutney</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹89</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('samosa', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="samosa-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('samosa', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Momos -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb" alt="Momos" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Steamed Momos</h3>
+                    <p class="text-gray-300 text-sm mb-3">6 Pcs Veg/Chicken + Spicy Sauce</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹129</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('momos', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="momos-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('momos', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sandwich -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af" alt="Sandwich" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Grilled Sandwich</h3>
+                    <p class="text-gray-300 text-sm mb-3">Veg/Cheese + Mayo Dip</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹149</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('sandwich', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="sandwich-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('sandwich', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- French Fries -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d" alt="Fries" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">French Fries</h3>
+                    <p class="text-gray-300 text-sm mb-3">Crispy + Peri Peri Seasoning</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹119</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('fries', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="fries-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('fries', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nachos -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1513456852971-30c0b8199d4d" alt="Nachos" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Loaded Nachos</h3>
+                    <p class="text-gray-300 text-sm mb-3">Cheese Sauce + Salsa + Jalapenos</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹179</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('nachos', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="nachos-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('nachos', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Burger -->
+                <div class="food-card rounded-lg p-4">
+                    <img src="https://images.unsplash.com/photo-1586816001966-79b736744398" alt="Burger" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg text-[#00f7ff] mb-2">Cheese Burger</h3>
+                    <p class="text-gray-300 text-sm mb-3">Veg/Chicken + Fries + Mayo</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white">₹199</span>
+                        <div class="flex items-center gap-2">
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('burger', -1)">-</button>
+                            <span class="text-white w-8 text-center" id="burger-qty">0</span>
+                            <button class="quantity-btn w-8 h-8 rounded-full" onclick="updateQuantity('burger', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h2 class="text-xl text-cyan-400 mb-4">Order Summary</h2>
+                <div id="order-summary" class="text-gray-300 space-y-2"></div>
+                <div class="border-t border-gray-600 mt-4 pt-4">
+                    <p class="text-xl text-cyan-400">Total: ₹<span id="total-price">0</span></p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-4">
+                <button onclick="skipFood()" class="w-1/2 p-3 rounded-lg border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 transition-all">
+                    Skip
+                </button>
+                <button onclick="proceedToPayment()" class="w-1/2 p-3 rounded-lg bg-cyan-400 text-gray-900 hover:bg-cyan-300 transition-all">
+                    Add to Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const prices = {
+            combo: 299,
+            popcorn: 199,
+            drinks: 99,
+            samosa: 89,
+            momos: 129,
+            sandwich: 149,
+            fries: 119,
+            nachos: 179,
+            burger: 199
+        };
+        const quantities = {
+            combo: 0,
+            popcorn: 0,
+            drinks: 0,
+            samosa: 0,
+            momos: 0,
+            sandwich: 0,
+            fries: 0,
+            nachos: 0,
+            burger: 0
+        };
+
+        function updateQuantity(item, delta) {
+            quantities[item] = Math.max(0, quantities[item] + delta);
+            document.getElementById(`${item}-qty`).textContent = quantities[item];
+            updateSummary();
+        }
+
+        function updateSummary() {
+            let total = 0;
+            let summary = '';
+
+            for (const [item, qty] of Object.entries(quantities)) {
+                if (qty > 0) {
+                    const itemTotal = qty * prices[item];
+                    total += itemTotal;
+                    summary += `<p>${item.charAt(0).toUpperCase() + item.slice(1)}: ${qty} × ₹${prices[item]} = ₹${itemTotal}</p>`;
+                }
+            }
+
+            document.getElementById('order-summary').innerHTML = summary || '<p>No items selected</p>';
+            document.getElementById('total-price').textContent = total;
+        }
+
+        function proceedToPayment() {
+            const bookingData = JSON.parse(localStorage.getItem('bookingData'));
+            bookingData.foodOrder = {
+                items: quantities,
+                totalPrice: Object.entries(quantities).reduce((total, [item, qty]) => total + qty * prices[item], 0)
+            };
+            localStorage.setItem('bookingData', JSON.stringify(bookingData));
+            window.location.href = 'payment.html';
+        }
+
+        function skipFood() {
+            window.location.href = 'payment.html';
+        }
+    </script>
+</body>
+</html>
