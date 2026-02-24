@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Form Animation CSS | code_wars_official</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* ✅ Static Background Image (no effects) */
+    body {
+      background: url('https://m.media-amazon.com/images/I/81LI1-0qR0L.jpg') no-repeat center center / cover;
+      background-attachment: fixed;
+    }
+
+    .glow-cyan {
+      color: #00f7ff;
+      text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff;
+    }
+
+    .glow-cyan-sm {
+      color: #00f7ff;
+      text-shadow: 0 0 10px #00f7ff;
+    }
+
+    .glow-cyan-xs {
+      color: #00f7ff;
+      text-shadow: 0 0 5px #00f7ff;
+    }
+
+    .box-glow-cyan {
+      box-shadow: 0 0 15px #00f7ff, 0 0 15px #00f7ff;
+    }
+
+    .drop-glow-cyan {
+      filter: drop-shadow(0 0 5px #00f7ff);
+    }
+
+    .input-check:checked~.h2-glow {
+      color: #00f7ff;
+      text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff;
+    }
+
+    .input-check:checked~.input-box .input-line {
+      background: #00f7ff;
+      box-shadow: 0 0 10px #00f7ff;
+    }
+
+    .input-check:checked~.input-box label {
+      color: #00f7ff;
+      text-shadow: 0 0 10px #00f7ff;
+    }
+
+    .input-check:checked~.input-box input {
+      color: #00f7ff;
+      text-shadow: 0 0 5px #00f7ff;
+    }
+
+    .input-check:checked~.input-box .icon {
+      color: #00f7ff;
+      filter: drop-shadow(0 0 5px #00f7ff);
+    }
+
+    .input-check:checked~.remember-forgot {
+      color: #00f7ff;
+      text-shadow: 0 0 10px #00f7ff;
+    }
+
+    .input-check:checked~.remember-forgot input {
+      accent-color: #00f7ff;
+    }
+
+    .input-check:checked~.remember-forgot a {
+      color: #00f7ff;
+    }
+
+    .input-check:checked~.btn-glow {
+      background: #00f7ff;
+      box-shadow: 0 0 15px #00f7ff, 0 0 15px #00f7ff;
+    }
+
+    .input-check:checked~.register-link {
+      color: #00f7ff;
+      text-shadow: 0 0 10px #00f7ff;
+    }
+
+    .input-check:checked~.register-link a {
+      color: #00f7ff;
+    }
+
+    .input-check:checked~.light {
+      top: -90%;
+    }
+
+    .input-check:checked~.toggle::after {
+      top: 65px;
+    }
+
+    .input-check:checked~.toggle .text.off {
+      top: 76px;
+      opacity: 0;
+    }
+
+    .input-check:checked~.toggle .text.on {
+      top: 76px;
+      opacity: 1;
+      color: #00f7ff;
+      text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff, 0 0 45px #00f7ff, 0 0 60px #00f7ff;
+    }
+
+    .light {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, .3) -50%, rgba(255, 255, 255, 0) 90%);
+      clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+    }
+
+    .toggle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 80%;
+      background: #000;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 45px;
+      height: 45px;
+      background: #333;
+      border: 2px solid #191919;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+      transition: .5s ease;
+    }
+  </style>
+</head>
+
+<body class="font-poppins flex justify-center items-center min-h-screen overflow-hidden relative">
+  <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[500px] h-[10px] rounded-[20px]"
+    style="background: #00f7ff;"></div>
+
+  <div class="relative w-[400px] h-[450px] rounded-[20px] flex justify-center items-center"
+    style="background: #191919;">
+    <form action="#" class="w-full px-11" onsubmit="handleLogin(event)">
+      <input type="checkbox" class="input-check absolute right-[-70px] z-10 opacity-0" id="input-check" />
+
+      <label for="input-check"
+        class="toggle absolute top-5 right-[-70px] w-[60px] h-[120px] rounded-[10px] before:content-[''] after:content-[''] transition-all duration-500"
+        style="background: #191919;">
+        <span
+          class="text off absolute top-[17px] left-1/2 transform -translate-x-1/2 text-white text-base z-10 uppercase pointer-events-none transition-all duration-500 opacity-100">off</span>
+        <span
+          class="text on absolute top-[17px] left-1/2 transform -translate-x-1/2 text-white text-base z-10 uppercase pointer-events-none transition-all duration-500 opacity-0">on</span>
+      </label>
+
+      <div class="light absolute top-[-200%] left-0 w-full h-[950px] pointer-events-none transition-all duration-500"></div>
+
+      <h2 class="h2-glow text-3xl text-white text-center transition-all duration-500 mb-8">MovieMania</h2>
+
+      <!-- Email -->
+      <div class="input-box relative w-[310px] mx-auto my-[30px]">
+        <span class="icon absolute right-2 text-white text-xl leading-[57px] transition-all duration-500">
+          <ion-icon name="mail"></ion-icon>
+        </span>
+        <input type="email" required
+          class="peer w-full h-[50px] bg-transparent border-none outline-none text-base text-white pr-[35px] pl-[5px] transition-all duration-500" />
+        <label
+          class="absolute left-[5px] top-1/2 transform -translate-y-1/2 text-base text-white pointer-events-none transition-all duration-500 peer-focus:top-[-8px] peer-focus:text-sm peer-valid:top-[-8px] peer-valid:text-sm">
+          Email
+        </label>
+        <div class="input-line absolute bottom-[-2px] left-0 w-full h-[2.5px] bg-white transition-all duration-500"></div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-box relative w-[310px] mx-auto my-[30px]">
+        <span class="icon absolute right-2 text-white text-xl leading-[57px] transition-all duration-500">
+          <ion-icon name="lock-closed"></ion-icon>
+        </span>
+        <input type="password" required
+          class="peer w-full h-[50px] bg-transparent border-none outline-none text-base text-white pr-[35px] pl-[5px] transition-all duration-500" />
+        <label
+          class="absolute left-[5px] top-1/2 transform -translate-y-1/2 text-base text-white pointer-events-none transition-all duration-500 peer-focus:top-[-8px] peer-focus:text-sm peer-valid:top-[-8px] peer-valid:text-sm">
+          Password
+        </label>
+        <div class="input-line absolute bottom-[-2px] left-0 w-full h-[2.5px] bg-white transition-all duration-500"></div>
+      </div>
+
+      <div class="remember-forgot text-white text-sm -mt-4 mb-4 flex justify-between transition-all duration-500">
+        <label class="flex items-center">
+          <input type="checkbox" class="mr-1 transition-all duration-500" style="accent-color: #fff;" />
+          Remember me
+        </label>
+        <a href="#" class="text-white no-underline transition-colors duration-500 hover:underline">Forgot Password?</a>
+      </div>
+
+      <button type="submit"
+        class="btn-glow w-full h-10 bg-white border-none outline-none rounded-[40px] cursor-pointer text-base font-medium transition-all duration-500"
+        style="color: #191919;">Login</button>
+
+      <div class="register-link text-white text-sm text-center mt-6 mb-[10px] transition-all duration-500">
+        <p>Don't have an account? <a href="#"
+            class="text-white no-underline font-semibold transition-colors duration-500 hover:underline">Register</a>
+        </p>
+      </div>
+    </form>
+  </div>
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="script2.js"></script>
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+      const email = document.querySelector('input[type="email"]').value;
+      const password = document.querySelector('input[type="password"]').value;
+
+      if (email && password) {
+        localStorage.setItem('userEmail', email);
+        window.location.href = 'movies.html';
+      }
+    }
+  </script>
+</body>
+
+</html>

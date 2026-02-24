@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieMania - Movies</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: url('https://m.media-amazon.com/images/I/81LI1-0qR0L.jpg') no-repeat center center / cover;
+            background-attachment: fixed;
+        }
+
+        .glow-cyan {
+            color: #00f7ff;
+            text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff;
+        }
+
+        .box-glow-cyan {
+            box-shadow: 0 0 15px #00f7ff, 0 0 15px #00f7ff;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .movie-card {
+            background: rgba(25, 25, 25, 0.9);
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px #00f7ff;
+            animation: none; /* Stop floating animation on hover */
+        }
+
+        .book-btn {
+            background: #00f7ff;
+            color: #191919;
+            transition: all 0.3s ease;
+        }
+
+        .book-btn:hover {
+            box-shadow: 0 0 15px #00f7ff;
+        }
+
+        .upcoming-movies {
+            background: rgba(25, 25, 25, 0.9);
+            overflow: hidden;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        .movie-scroll {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 0 20px;
+            justify-content: center;
+        }
+
+        .upcoming-movie-card {
+            width: 200px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00f7ff;
+            border-radius: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .upcoming-movie-card:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Offset animation timing for each card */
+        .movie-card:nth-child(2) { animation-delay: 0.2s; }
+        .movie-card:nth-child(3) { animation-delay: 0.4s; }
+        .movie-card:nth-child(4) { animation-delay: 0.6s; }
+        .movie-card:nth-child(5) { animation-delay: 0.8s; }
+        .movie-card:nth-child(6) { animation-delay: 1s; }
+
+        /* Offset animation timing for upcoming movies */
+        .upcoming-movie-card:nth-child(2) { animation-delay: 0.3s; }
+        .upcoming-movie-card:nth-child(3) { animation-delay: 0.6s; }
+        .upcoming-movie-card:nth-child(4) { animation-delay: 0.9s; }
+        .upcoming-movie-card:nth-child(5) { animation-delay: 1.2s; }
+        .upcoming-movie-card:nth-child(6) { animation-delay: 1.5s; }
+
+        .release-date {
+            background: #00f7ff;
+            color: #191919;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="font-poppins min-h-screen">
+    <!-- Header -->
+    <header class="bg-[#191919] py-4 px-6 mb-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl glow-cyan">MovieMania</h1>
+            <nav>
+                <button onclick="logout()" class="book-btn px-6 py-2 rounded-full font-medium">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Welcome Message -->
+    <div class="container mx-auto px-4 mb-8">
+        <div class="bg-[#191919] rounded-lg p-4">
+            <h2 class="text-2xl glow-cyan" id="welcomeMessage"></h2>
+        </div>
+    </div>
+
+    <!-- Upcoming Movies Carousel -->
+   
+
+    <!-- Movie Grid -->
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Movie Cards -->
+            <div class="movie-card rounded-lg overflow-hidden">
+                <img src="https://rukminim2.flixcart.com/image/850/1000/xif0q/poster/m/k/k/small-spos8308-poster-inception-animated-wall-poster-sl-8308-original-imaghzwanmepwc89.jpeg?q=90&crop=false" alt="Movie" class="w-full h-48 object-fit">
+                <div class="p-4">
+                    <h3 class="text-xl text-[#00f7ff] mb-2">Inception</h3>
+                    <p class="text-gray-300 mb-4">A skilled thief enters people's dreams to steal secrets but is tasked with planting an idea instead. Mind-bending and visually stunning.</p>
+                    <button class="book-btn w-full py-2 rounded-full font-medium">Book Now</button>
+                </div>
+            </div>
+
+            <div class="movie-card rounded-lg overflow-hidden">
+                <img src="https://c4.wallpaperflare.com/wallpaper/649/1012/960/john-wick-movie-poster-wallpaper-preview.jpg" alt="Movie" class="w-full h-48 object-fit">
+                <div class="p-4">
+                    <h3 class="text-xl text-[#00f7ff] mb-2">John Wick </h3>
+                    <p class="text-gray-300 mb-4">An ex-hitman seeks revenge for the death of his beloved dog — and unleashes chaos in the criminal underworld.</p>
+                    <button class="book-btn w-full py-2 rounded-full font-medium">Book Now</button>
+                </div>
+            </div>
+
+            <div class="movie-card rounded-lg overflow-hidden">
+                <img src="https://www.hollywoodreporter.com/wp-content/uploads/2013/12/the_fault_in_our_stars_poster.jpg?w=1440&h=810&crop=1" alt="Movie" class="w-full h-48 object-fit">
+                <div class="p-4">
+                    <h3 class="text-xl text-[#00f7ff] mb-2">The Fault in Our Stars</h3>
+                    <p class="text-gray-300 mb-4">Two teenagers with cancer embark on a journey to find a reclusive author, discovering love and life along the way.</p>
+                    <button class="book-btn w-full py-2 rounded-full font-medium">Book Now</button>
+                </div>
+            </div>
+
+            <div class="movie-card rounded-lg overflow-hidden">
+                <img src="https://wallpapers.com/images/hd/the-conjuring-poster-y2bs1yiiscn9qdio.jpg" alt="Movie" class="w-full h-48 object-fit">
+                <div class="p-4">
+                    <h3 class="text-xl text-[#00f7ff] mb-2">The Conjuring</h3>
+                    <p class="text-gray-300 mb-4">Paranormal investigators Ed and Lorraine Warren work to help a family terrorized by a dark presence in their farmhouse.</p>
+                    <button class="book-btn w-full py-2 rounded-full font-medium">Book Now</button>
+                </div>
+            </div>
+
+            <div class="movie-card rounded-lg overflow-hidden">
+                <img src="https://assets-in.bmscdn.com/discovery-catalog/events/et00065343-nrvzfjjbht-landscape.jpg" alt="Movie" class="w-full h-48 object-fit">
+                <div class="p-4">
+                    <h3 class="text-xl text-[#00f7ff] mb-2">A Quiet Place</h3>
+                    <p class="text-gray-300 mb-4">In a post-apocalyptic world, a family must live in silence to avoid blind monsters with acute hearing.</p>
+                    <button class="book-btn w-full py-2 rounded-full font-medium">Book Now</button>
+                </div>
+            </div>
+
+            <div class="movie-card rounded-lg overflow-hidden">
+                <img src="https://m.media-amazon.com/images/M/MV5BNTI1NDg2OTQtNjE2Yi00NGRlLTlhODMtNTljMDJhYzgwOTBiXkEyXkFqcGc@._V1_.jpg" alt="Movie" class="w-full h-48 object-fit">
+                <div class="p-4">
+                    <h3 class="text-xl text-[#00f7ff] mb-2">Phir Hera Pheri</h3>
+                    <p class="text-gray-300 mb-4">Three broke men — Raju, Shyam, and Babu Bhaiya — get caught in a hilarious mess after a kidnapping call reaches them by mistake. Chaos, confusion, and comedy follow in this cult classic.
+
+</p>
+                    <button class="book-btn w-full py-2 rounded-full font-medium">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) {
+                window.location.href = 'login.html';
+            } else {
+                document.getElementById('welcomeMessage').innerText = `Welcome back, ${userEmail.split('@')[0]}!`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('userEmail');
+            window.location.href = 'login.html';
+        }
+
+        // Add click handlers to all book buttons
+        document.querySelectorAll('.book-btn').forEach((button, index) => {
+            button.addEventListener('click', function() {
+                const movieCard = this.closest('.movie-card');
+                const movieData = {
+                    name: movieCard.querySelector('h3').textContent,
+                    description: movieCard.querySelector('p').textContent,
+                    image: movieCard.querySelector('img').src,
+                    showTime: "08:00 PM", // Default show time
+                    price: 150 // Base price
+                };
+                localStorage.setItem('selectedMovie', JSON.stringify(movieData));
+                window.location.href = 'seats.html';
+            });
+        });
+    </script>
+</body>
+</html>
+                };
+                localStorage.setItem('selectedMovie', JSON.stringify(movieData));
+                window.location.href = 'seats.html';
+            });
+        });
+    </script>
+</body>
+</html>

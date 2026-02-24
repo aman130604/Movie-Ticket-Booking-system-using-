@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking System | Seat Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glow-cyan {
+            color: #00f7ff;
+            text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff;
+        }
+
+        .seat {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .seat.available {
+            background: #4a5568;
+            border: 2px solid #00f7ff;
+            color: #00f7ff;
+        }
+
+        .seat.available:hover {
+            background: #00f7ff;
+            border-color: #00f7ff;
+            color: #191919;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+        }
+
+        .seat.selected {
+            background: #00f7ff;
+            border: 2px solid #00f7ff;
+            color: #191919;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.7);
+        }
+
+        .seat.booked {
+            background: #e53e3e;
+            border: 2px solid #c53030;
+            color: #fed7d7;
+            cursor: not-allowed;
+        }
+
+        .seat.premium {
+            border-width: 3px;
+        }
+
+        .main-title h1 {
+            color: #00f7ff;
+            text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff, 0 0 45px #00f7ff;
+        }
+
+        .booking-container .price-summary {
+            border-color: #00f7ff;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+        }
+
+        .screen {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 100px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body class="font-poppins min-h-screen bg-[#151f28]">
+
+    <div class="main-title text-center pt-8 pb-4">
+        <h1 class="text-3xl text-white font-bold tracking-wider uppercase">Seat Selection</h1>
+        <input type="text" id="searchSeat" placeholder="Search seat (e.g., A5)" class="mt-4 px-4 py-2 rounded bg-gray-800 text-white border border-cyan-400">
+        <div class="text-white mt-4">
+            <p class="text-sm opacity-70">Search seat will highlight the match below</p>
+        </div>
+    </div>
+
+    <div class="booking-container max-w-6xl mx-auto px-4 py-6">
+
+        <div class="text-center mb-12">
+            <div class="screen w-80 h-4 mx-auto mb-2"></div>
+            <p class="text-white text-sm opacity-70">Screen this way</p>
+        </div>
+
+        <div class="seating-area max-w-4xl mx-auto" id="seat-area"></div>
+
+        <div class="price-summary fixed bottom-0 left-0 right-0 border-t-2 border-white p-4">
+            <div class="max-w-6xl mx-auto flex justify-between items-center text-white">
+                <div>
+                    <p class="text-sm">Selected Seats: <span id="selected-seats">None</span></p>
+                    <p class="text-xs text-gray-400" id="category-counts"></p>
+                    <p class="text-lg font-bold">Total: ₹<span id="total-price">0</span></p>
+                </div>
+                <button id="proceed-btn" class="bg-white text-gray-900 py-3 px-8 rounded-full font-semibold" disabled>Proceed to Payment</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const seatConfig = {
+            premium: { rows: ['A', 'B', 'C'], seatsPerRow: 16, price: 350, color: '#ffd700' },
+            executive: { rows: ['D', 'E', 'F', 'G', 'H'], seatsPerRow: 18, price: 250, color: '#90cdf4' },
+            normal: { rows: ['I', 'J', 'K', 'L', 'M'], seatsPerRow: 20, price: 150, color: '#9ae6b4' }
+        };
+
+        const bookedSeats = ['A5', 'D8', 'F15', 'I13', 'K6'];
+        let selectedSeats = [];
+        let bookingHistory = [];
+        let totalPrice = 0;
+
+        function generateSeats(sectionId, config, sectionType) {
+            const section = document.createElement('div');
+
+            config.rows.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'flex justify-center items-center gap-1 mb-2';
+
+                for (let i = 1; i <= config.seatsPerRow; i++) {
+                    const seatId = `${row}${i}`;
+                    const seat = document.createElement('div');
+                    seat.className = 'seat';
+                    seat.id = seatId;
+                    seat.textContent = seatId;
+
+                    if (bookedSeats.includes(seatId)) {
+                        seat.classList.add('booked');
+                    } else {
+                        seat.classList.add('available');
+                        seat.style.borderColor = config.color;
+                        if (sectionType === 'premium') seat.classList.add('premium');
+
+                        seat.addEventListener('click', () => toggleSeat(seatId, config.price, seat));
+                    }
+
+                    rowDiv.appendChild(seat);
+                }
+
+                section.appendChild(rowDiv);
+            });
+
+            document.getElementById('seat-area').appendChild(section);
+        }
+
+        function toggleSeat(seatId, price, seatElement) {
+            if (selectedSeats.includes(seatId)) {
+                selectedSeats = selectedSeats.filter(id => id !== seatId);
+                totalPrice -= price;
+                seatElement.classList.remove('selected');
+                seatElement.classList.add('available');
+                bookingHistory.push(`Deselected ${seatId}`);
+            } else {
+                if (selectedSeats.length < 10) {
+                    selectedSeats.push(seatId);
+                    totalPrice += price;
+                    seatElement.classList.remove('available');
+                    seatElement.classList.add('selected');
+                    bookingHistory.push(`Selected ${seatId}`);
+                } else {
+                    alert('You can select maximum 10 seats at a time');
+                }
+            }
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const sorted = [...selectedSeats].sort((a, b) => {
+                const rowA = a.charCodeAt(0), rowB = b.charCodeAt(0);
+                const numA = parseInt(a.slice(1)), numB = parseInt(b.slice(1));
+                return rowA === rowB ? numA - numB : rowA - rowB;
+            });
+
+            document.getElementById('selected-seats').textContent = sorted.length ? sorted.join(', ') : 'None';
+            document.getElementById('total-price').textContent = totalPrice;
+            document.getElementById('proceed-btn').disabled = sorted.length === 0;
+
+            const premiumCount = sorted.filter(s => 'ABC'.includes(s[0])).length;
+            const executiveCount = sorted.filter(s => 'DEFGH'.includes(s[0])).length;
+            const normalCount = sorted.filter(s => 'IJKLM'.includes(s[0])).length;
+            document.getElementById('category-counts').textContent = `Premium: ${premiumCount}, Executive: ${executiveCount}, Normal: ${normalCount}`;
+        }
+
+        document.getElementById('searchSeat').addEventListener('input', function () {
+            const val = this.value.toUpperCase().trim();
+            document.querySelectorAll('.seat').forEach(seat => {
+                seat.style.boxShadow = seat.id === val ? '0 0 15px lime' : '';
+            });
+        });
+
+        document.getElementById('proceed-btn').addEventListener('click', function() {
+            if (selectedSeats.length > 0) {
+                const selectedMovie = JSON.parse(localStorage.getItem('selectedMovie'));
+                const bookingData = {
+                    selectedSeats: selectedSeats,
+                    totalPrice: totalPrice,
+                    movieName: selectedMovie.name,
+                    theater: "PVR Cinemas",
+                    screen: "Screen 3",
+                    showTime: selectedMovie.showTime,
+                    bookingDate: new Date().toLocaleDateString()
+                };
+                
+                localStorage.setItem('bookingData', JSON.stringify(bookingData));
+                window.location.href = 'food.html';  // Changed to food.html
+            }
+        });
+
+        // Initialize layout
+        generateSeats('premium-section', seatConfig.premium, 'premium');
+        generateSeats('executive-section', seatConfig.executive, 'executive');
+        generateSeats('normal-section', seatConfig.normal, 'normal');
+    </script>
+</body>
+</html>
