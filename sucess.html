@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Successful - MovieMania</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #151f28;
+        }
+        .glow-cyan {
+            color: #00f7ff;
+            text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff;
+        }
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .celebration-text {
+            animation: celebrationGlow 2s infinite;
+        }
+
+        @keyframes celebrationGlow {
+            0%, 100% { text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff; }
+            50% { text-shadow: 0 0 25px #00f7ff, 0 0 50px #00f7ff; }
+        }
+        .success-icon {
+            animation: successPop 0.8s cubic-bezier(0.65, 0, 0.45, 1) forwards,
+                       successGlow 2s infinite;
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes successGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 247, 255, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(0, 247, 255, 0.8); }
+        }
+    </style>
+</head>
+<body class="font-poppins min-h-screen">
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[500px] h-[10px] rounded-[20px]" style="background: #00f7ff;"></div>
+
+    <div class="container mx-auto px-4 py-16">
+        <div class="max-w-2xl mx-auto">
+            <!-- Success Message -->
+            <div class="text-center mb-8">
+                <div class="w-24 h-24 bg-cyan-400 rounded-full mx-auto mb-6 flex items-center justify-center success-icon">
+                    <svg class="w-12 h-12 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h1 class="text-3xl glow-cyan mb-4 celebration-text">Booking Successful! 🎉</h1>
+                <p class="text-gray-400">Your movie tickets have been booked successfully</p>
+            </div>
+
+            <!-- Booking Details -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-8">
+                <h2 class="text-xl text-cyan-400 mb-4">Booking Details</h2>
+                <div id="booking-details" class="text-gray-300 space-y-3">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col gap-4">
+                <button onclick="downloadTicket()" class="w-full bg-cyan-400 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-cyan-300 transition-all">
+                    Download Ticket
+                </button>
+                <button onclick="bookAnother()" class="w-full bg-gray-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-600 transition-all">
+                    Book Another Movie
+                </button>
+                <button onclick="goHome()" class="w-full border-2 border-cyan-400 text-cyan-400 py-3 px-6 rounded-lg font-semibold hover:bg-cyan-400 hover:text-gray-900 transition-all">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const bookingData = JSON.parse(localStorage.getItem('completedBooking'));
+            if (!bookingData) {
+                window.location.href = 'movies.html';
+                return;
+            }
+
+            document.getElementById('booking-details').innerHTML = `
+                <p><strong>Movie:</strong> ${bookingData.movieName}</p>
+                <p><strong>Theater:</strong> ${bookingData.theater}</p>
+                <p><strong>Screen:</strong> ${bookingData.screen}</p>
+                <p><strong>Date:</strong> ${bookingData.bookingDate}</p>
+                <p><strong>Show Time:</strong> ${bookingData.showTime}</p>
+                <p><strong>Seats:</strong> ${bookingData.selectedSeats.join(', ')}</p>
+                ${bookingData.foodOrder ? `
+                <div class="mt-4 pt-4 border-t border-gray-600">
+                    <p><strong>Food & Beverages:</strong></p>
+                    <p class="text-gray-400 text-sm">Food Total: ₹${bookingData.foodOrder.totalPrice}</p>
+                </div>` : ''}
+                <p class="text-xl text-cyan-400 mt-4"><strong>Total Amount Paid:</strong> ₹${bookingData.totalPrice + (bookingData.foodOrder?.totalPrice || 0)}</p>
+            `;
+        };
+
+        function downloadTicket() {
+            alert('Ticket downloaded successfully! Check your downloads folder.');
+        }
+
+        function createConfetti() {
+            const colors = ['#00f7ff', '#ffffff', '#ffd700'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animation = `confetti ${Math.random() * 3 + 2}s linear`;
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                confetti.addEventListener('animationend', () => {
+                    confetti.remove();
+                });
+            }
+        }
+
+        // Create new confetti every few seconds
+        function startCelebration() {
+            createConfetti();
+            const interval = setInterval(createConfetti, 4000);
+            
+            // Stop celebration after 15 seconds
+            setTimeout(() => {
+                clearInterval(interval);
+            }, 15000);
+        }
+
+        // Start celebration when page loads
+        window.addEventListener('load', startCelebration);
+
+        function bookAnother() {
+            // Clear only booking related data
+            localStorage.removeItem('selectedMovie');
+            localStorage.removeItem('bookingData');
+            localStorage.removeItem('completedBooking');
+            window.location.href = 'movies.html';
+        }
+
+        function goHome() {
+            // Clear all data except user info
+            const userEmail = localStorage.getItem('userEmail');
+            localStorage.clear();
+            localStorage.setItem('userEmail', userEmail);
+            window.location.href = 'movies.html';
+        }
+    </script>
+</body>
+</html>
